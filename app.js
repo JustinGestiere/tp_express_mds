@@ -9,16 +9,6 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-// -----------------------
-// AJOUT : démarrage du serveur
-// -----------------------
-const port = process.env.PORT || 8080;
-
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server running on port ${port}`);
-});
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,7 +17,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static("public"));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -43,9 +34,17 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   res.status(err.status || 500);
-  res.render('error');
+  res.render('404', {title:'Error 404'});
 });
 
+// -----------------------
+// AJOUT : démarrage du serveur
+// -----------------------
+const port = process.env.PORT || 8080;
+
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Server running on port ${port}`);
+});
 // -----------------------
 module.exports = app;
 
