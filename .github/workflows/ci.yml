@@ -21,5 +21,5 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             cd /var/www/html/tp-express-mds.justingestiere.com
-            git pull origin main
+            sudo git pull origin main
             docker-compose up -d --build
