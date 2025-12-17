@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<%- include("layout/head.ejs") %>
+
+<body>
+    <%- include("layout/header") %>
+    <h1>Connexion</h1>
+
+    <% if (error) { %>
+        <p style="color:red"><%= error %></p>
+    <% } %>
+
+    <form method="POST" action="/connexion">
+        <label>
+            Nom d'utilisateur
+            <input type="text" name="username" required>
+        </label>
+
+        <label>
+            Mot de passe
+            <input type="password" name="password" required>
+        </label>
+
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+
+<%- include("layout/footer") %>

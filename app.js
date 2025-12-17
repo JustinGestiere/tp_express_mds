@@ -9,9 +9,43 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+//session
+var session = require("express-session");
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+//session
+app.use(session({
+  secret: "secret-admin",
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.get("/connexion", (req, res) => {
+  res.render("connexion", { title:"TP NodeJS", error: null });
+});
+
+app.post("/connexion", (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === "admin" && password === "admin") {
+    req.session.isAdmin = true;
+    return res.redirect("/dashboard");
+  }
+
+  res.render("connexion", { error: "Identifiants incorrects" });
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/connexion");
+  });
+});
+
+//
+app.use(express.urlencoded({ extended: true }));
 
 app.use(logger('dev'));
 app.use(express.json());
