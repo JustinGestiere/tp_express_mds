@@ -1,0 +1,7 @@
+services:
+  app:
+    container_name: tp-express
+    build: .
+    ports:
+      - "8080:8080"  # uniquement interne
+    restart: unless-stopped
