@@ -3,30 +3,24 @@ var path = require('path');
 var logger = require('morgan');
 var session = require('express-session');
 var http = require('http');
-var { Server } = require('socket.io');
+const { Server } = require("socket.io");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-/* ======================
-   VIEW ENGINE
-====================== */
+/* VIEW ENGINE */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-/* ======================
-   MIDDLEWARES GLOBAUX
-====================== */
+/* MIDDLEWARES */
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
-/* ======================
-   SESSION (MINIMALE)
-====================== */
+/* SESSION */
 app.use(session({
   secret: 'admin',
   resave: false,
@@ -38,32 +32,25 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ======================
-   ROUTES
-====================== */
+/* ROUTES */
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-/* ======================
-   404
-====================== */
+/* 404 */
 app.use((req, res) => {
   res.status(404).render('404', { title: 'Page introuvable' });
 });
 
-/* ======================
-   SERVER HTTP + SOCKET.IO
-====================== */
+/* SERVER + SOCKET.IO */
 const server = http.createServer(app);
 const io = new Server(server);
 
+/* Socket.IO */
 io.on("connection", (socket) => {
   console.log("Nouvel utilisateur connecté");
 
-  // réception des messages
   socket.on("chatMessage", (data) => {
-    // broadcast à tous les clients
-    io.emit("chatMessage", data);
+    io.emit("chatMessage", data); // broadcast à tous
   });
 
   socket.on("disconnect", () => {
@@ -71,9 +58,8 @@ io.on("connection", (socket) => {
   });
 });
 
-/* ======================
-   LANCEMENT DU SERVEUR
-====================== */
+
+/* LANCEMENT DU SERVEUR */
 const port = process.env.PORT || 8080;
 server.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port} (HTTP + Socket.IO)`);
