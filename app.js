@@ -4,11 +4,25 @@ var logger = require('morgan');
 var session = require('express-session');
 var http = require('http');
 const { Server } = require("socket.io");
+const sqlite3 = require('sqlite3').verbose();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+/* BDD */
+const db = new sqlite3.Database('./chat.db');
+
+db.run(`
+  CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    message TEXT,
+    timestamp TEXT
+  )
+`);
+
 
 /* VIEW ENGINE */
 app.set('views', path.join(__dirname, 'views'));

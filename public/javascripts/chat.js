@@ -10,7 +10,45 @@ const chatBox = document.getElementById("chat-box");
 
 let username = "";
 
-// 1️⃣ Validation du nom
+// Liste des mots interdits (en minuscules)
+const bannedWords = ["pute", "salope", "connard"];
+
+/**
+ * Remplace les mots interdits par des **** correspondant à leur longueur
+ * @param {string} text
+ * @returns {string}
+ */
+function censorText(text) {
+    return text.split(/\b/).map(word => {
+        return bannedWords.includes(word.toLowerCase())
+            ? "*".repeat(word.length)
+            : word;
+    }).join("");
+}
+
+/**
+ * Affiche un message dans le chat
+ * @param {Object} data - { username, message, timestamp }
+ */
+function displayMessage(data) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+
+    const strong = document.createElement("strong");
+    strong.textContent = `${data.username} :`;
+
+    const span = document.createElement("span");
+    span.textContent = `${censorText(data.message)} [${data.timestamp}]`;
+
+    div.appendChild(strong);
+    div.appendChild(document.createTextNode(" "));
+    div.appendChild(span);
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Validation du nom
 nameForm.addEventListener("submit", (e) => {
     e.preventDefault();
     username = nameInput.value.trim();
@@ -18,38 +56,35 @@ nameForm.addEventListener("submit", (e) => {
 
     nameForm.style.display = "none";
     chatForm.style.display = "flex";
+    messageInput.focus();
 });
 
-// 2️⃣ Envoi d'un message
+// Envoi d'un message
 chatForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const message = messageInput.value.trim();
     if (!message) return;
 
+    const censoredMessage = censorText(message);
+
+    // Crée la date et l'heure complète
+    const timestamp = new Date().toLocaleString(); // ex: "18/12/2025 16:45:30"
+
     // Envoi au serveur
-    socket.emit("chatMessage", { username, message });
+    socket.emit("chatMessage", { username, message: censoredMessage, timestamp });
 
     messageInput.value = "";
+    messageInput.focus();
 });
 
-// 3️⃣ Réception des messages
+// Réception des messages temps réel
 socket.on("chatMessage", (data) => {
-    const div = document.createElement("div");
-    div.classList.add("message");
+    displayMessage(data);
+});
 
-    // Création sécurisée des éléments
-    const strong = document.createElement("strong");
-    strong.textContent = data.username + ":";  // textContent échappe automatiquement
-
-    const span = document.createElement("span");
-    span.textContent = data.message;            // textContent échappe automatiquement
-
-    div.appendChild(strong);
-    div.appendChild(document.createTextNode(" ")); // espace
-    div.appendChild(span);
-
-    chatBox.appendChild(div);
-
-    // Scroll automatique
-    chatBox.scrollTop = chatBox.scrollHeight;
+// Réception de l'historique à la connexion
+socket.on("chatHistory", (messages) => {
+    messages.forEach((data) => {
+        displayMessage(data);
+    });
 });
