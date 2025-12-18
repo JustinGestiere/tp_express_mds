@@ -36,7 +36,18 @@ chatForm.addEventListener("submit", (e) => {
 socket.on("chatMessage", (data) => {
     const div = document.createElement("div");
     div.classList.add("message");
-    div.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+
+    // Création sécurisée des éléments
+    const strong = document.createElement("strong");
+    strong.textContent = data.username + ":";  // textContent échappe automatiquement
+
+    const span = document.createElement("span");
+    span.textContent = data.message;            // textContent échappe automatiquement
+
+    div.appendChild(strong);
+    div.appendChild(document.createTextNode(" ")); // espace
+    div.appendChild(span);
+
     chatBox.appendChild(div);
 
     // Scroll automatique
