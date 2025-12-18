@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<%- include("layout/head.ejs") %>
+
+<body>
+    <%- include("layout/header.ejs") %>
+
+    <main class="chat-page">
+        <h1>Chat en temps réel</h1>
+
+        <!-- Formulaire pseudo -->
+        <form id="name-form">
+            <input type="text" id="name-input" placeholder="Ton nom" required>
+            <button type="submit">Valider</button>
+        </form>
+
+        <!-- Chat box -->
+        <div id="chat-box" class="chat-box">
+            <!-- Les messages apparaîtront ici -->
+        </div>
+
+        <!-- Formulaire message -->
+        <form id="chat-form">
+            <input type="text" id="message-input" placeholder="Écris un message..." required>
+            <button type="submit">Envoyer</button>
+        </form>
+    </main>
+
+    <%- include("layout/footer.ejs") %>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io(); // connexion automatique au serveur Socket.IO
+
+        const chatBox = document.getElementById("chat-box");
+        const chatForm = document.getElementById("chat-form");
+        const messageInput = document.getElementById("message-input");
+        const nameForm = document.getElementById("name-form");
+        const nameInput = document.getElementById("name-input");
+
+        let username = "";
+
+        // Soumettre le pseudo
+        nameForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            username = nameInput.value.trim();
+            if (username !== "") {
+                nameInput.disabled = true;
+                nameForm.querySelector("button").disabled = true;
+            }
+        });
+
+        // Soumettre un message
+        chatForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (message !== "" && username !== "") {
+                socket.emit("chatMessage", { user: username, text: message });
+                messageInput.value = "";
+            }
+        });
+
+        // Réception d’un message
+        socket.on("chatMessage", (data) => {
+            const msg = document.createElement("p");
+            msg.innerHTML = `<strong>${data.user}</strong> : ${data.text}`;
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+</body>
+</html>

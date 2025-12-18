@@ -30,6 +30,15 @@ router.get('/dashboard', function(req, res) {
 });
 
 /* ============================
+   GET chat page (protégé)
+============================ */
+router.get("/chat", (req, res) => {
+  res.render("chat", { 
+    title: "Chat en temps réel"
+  });
+});
+
+/* ============================
    GET / POST connexion page
 ============================ */
 router.get("/connexion", (req, res) => {
@@ -48,7 +57,7 @@ router.post("/connexion", (req, res) => {
   }
 
   res.render("connexion", { 
-    error: "Identifiants incorrects", 
+    error: "Identifiants ou Mot de passe incorrects", 
     title: "Connexion" 
   });
 });
@@ -75,6 +84,7 @@ router.get("/logout", (req, res) => {
     res.redirect("/connexion");
   });
 });
+
 
 
 module.exports = router;

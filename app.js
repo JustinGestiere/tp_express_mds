@@ -1,8 +1,9 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var session = require('express-session');
+var http = require('http');
+var { Server } = require('socket.io');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -51,11 +52,31 @@ app.use((req, res) => {
 });
 
 /* ======================
-   SERVER
+   SERVER HTTP + SOCKET.IO
+====================== */
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  console.log("Nouvel utilisateur connecté");
+
+  // réception des messages
+  socket.on("chatMessage", (data) => {
+    // broadcast à tous les clients
+    io.emit("chatMessage", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Utilisateur déconnecté");
+  });
+});
+
+/* ======================
+   LANCEMENT DU SERVEUR
 ====================== */
 const port = process.env.PORT || 8080;
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port} (HTTP + Socket.IO)`);
 });
 
 module.exports = app;

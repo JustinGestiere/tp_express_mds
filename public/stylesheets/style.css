@@ -62,8 +62,9 @@ footer {
    TITRES & TEXTE
 ========================= */
 h1 {
-    margin-bottom: 15px;
+    margin: 20px;
     font-size: 2rem;
+    text-align: center;
 }
 
 p {
@@ -77,9 +78,7 @@ p {
 form {
     max-width: 400px;
     margin: 20px auto;
-    display: flex;
     flex-direction: column;
-    gap: 15px;
 }
 
 label {
@@ -110,6 +109,7 @@ button:hover {
 .error {
     color: #b91c1c;
     margin-bottom: 15px;
+    text-align: center;
 }
 
 /* =========================
@@ -180,11 +180,6 @@ button:hover {
     padding: 0 20px;
 }
 
-.users-page h1, .dashboard h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
 .users-page p, .dashboard p {
     text-align: center;
     color: #475569;
@@ -222,4 +217,51 @@ button:hover {
 
 .notfound a:hover {
     background-color: #1e293b;
+}
+
+/* =========================
+   Chat
+========================= */
+.chat-page {
+    max-width: 600px;
+    margin: 0px auto;
+    padding: 0 20px;
+}
+
+#chat-box {
+    flex: 1;
+    height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 100px;
+    background-color: #f8fafc;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#chat-box p {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    word-wrap: break-word;
+}
+
+/* Formulaires */
+
+form input {
+    /* flex: 1 1 auto; */
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #0f172a;
+    color: white;
 }
