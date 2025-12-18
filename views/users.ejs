@@ -1,9 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <%- include("layout/head.ejs") %>
+
 <body>
     <%- include("layout/header.ejs") %>
-    <h1>Ici c'est le users</h1>
+
+    <main class="users-page">
+        <h1>Liste des utilisateurs</h1>
+        <p>Voici tous les utilisateurs enregistrés :</p>
+
+        <section class="user-cards">
+            <div class="card">
+                <h2>Admin</h2>
+                <p>Email : admin@banque.com</p>
+                <p>Rôle : Administrateur</p>
+            </div>
+
+            <div class="card">
+                <h2>Utilisateur 1</h2>
+                <p>Email : user1@banque.com</p>
+                <p>Rôle : Client</p>
+            </div>
+
+            <div class="card">
+                <h2>Utilisateur 2</h2>
+                <p>Email : user2@banque.com</p>
+                <p>Rôle : Client</p>
+            </div>
+        </section>
+    </main>
+
+    <%- include("layout/footer.ejs") %>
 </body>
-<%- include("layout/footer.ejs") %>
 </html>

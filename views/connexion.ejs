@@ -3,26 +3,30 @@
 <%- include("layout/head.ejs") %>
 
 <body>
-    <%- include("layout/header") %>
-    <h1>Connexion</h1>
+    <%- include("layout/header.ejs") %>
 
-    <% if (error) { %>
-        <p style="color:red"><%= error %></p>
-    <% } %>
+    <main>
+        <h1>Connexion</h1>
 
-    <form method="POST" action="/connexion">
-        <label>
-            Nom d'utilisateur
-            <input type="text" name="username" required>
-        </label>
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
 
-        <label>
-            Mot de passe
-            <input type="password" name="password" required>
-        </label>
+        <form method="POST" action="/connexion">
+            <label>
+                Nom d'utilisateur
+                <input type="text" name="username" required>
+            </label>
 
-        <button type="submit">Se connecter</button>
-    </form>
+            <label>
+                Mot de passe
+                <input type="password" name="password" required>
+            </label>
+
+            <button type="submit">Se connecter</button>
+        </form>
+    </main>
+
+    <%- include("layout/footer.ejs") %>
 </body>
-
-<%- include("layout/footer") %>
+</html>

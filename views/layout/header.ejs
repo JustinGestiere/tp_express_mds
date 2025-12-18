@@ -1,9 +1,17 @@
 <header>
-    <div>
+    <div class="nav">
         <a href="/">Accueil</a>
         <a href="/dashboard">Dashboard</a>
-        <a href="/connexion">Connexion</a>
-        <a href="/users">Users</a>
+
+        <% if (!isAuthenticated) { %>
+            <a href="/connexion">Connexion</a>
+        <% } %>
+
+        <% if (isAuthenticated) { %>
+            <a href="/users">Users</a>
+            <a href="/logout" class="logout">Déconnexion</a>
+        <% } %>
+
         <a href="/404">Page 404</a>
     </div>
 </header>
