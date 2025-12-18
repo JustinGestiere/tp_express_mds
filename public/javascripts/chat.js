@@ -11,7 +11,7 @@ const chatBox = document.getElementById("chat-box");
 let username = "";
 
 // Liste des mots interdits (en minuscules)
-const bannedWords = ["pute", "salope", "connard"];
+const bannedWords = ["pute", "salope", "connard", "encule", "salopard", "con", "conne", "merde", "batard"];
 
 /**
  * Remplace les mots interdits par des **** correspondant à leur longueur
@@ -24,28 +24,6 @@ function censorText(text) {
             ? "*".repeat(word.length)
             : word;
     }).join("");
-}
-
-/**
- * Affiche un message dans le chat
- * @param {Object} data - { username, message, timestamp }
- */
-function displayMessage(data) {
-    const div = document.createElement("div");
-    div.classList.add("message");
-
-    const strong = document.createElement("strong");
-    strong.textContent = `${data.username} :`;
-
-    const span = document.createElement("span");
-    span.textContent = `${censorText(data.message)} [${data.timestamp}]`;
-
-    div.appendChild(strong);
-    div.appendChild(document.createTextNode(" "));
-    div.appendChild(span);
-
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // Validation du nom
@@ -77,14 +55,22 @@ chatForm.addEventListener("submit", (e) => {
     messageInput.focus();
 });
 
-// Réception des messages temps réel
-socket.on("chatMessage", (data) => {
-    displayMessage(data);
-});
+// Réception des messages
+function displayMessage(data) {
+    const div = document.createElement("div");
+    div.classList.add("message");
 
-// Réception de l'historique à la connexion
-socket.on("chatHistory", (messages) => {
-    messages.forEach((data) => {
-        displayMessage(data);
-    });
-});
+    const strong = document.createElement("strong");
+    strong.textContent = `${data.username} :`;
+
+    const span = document.createElement("span");
+    span.textContent = `${censorText(data.message)} [${data.timestamp}]`;
+
+    div.appendChild(strong);
+    div.appendChild(document.createTextNode(" "));
+    div.appendChild(span);
+
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
