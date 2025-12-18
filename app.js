@@ -11,17 +11,17 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-/* BDD */
-const db = new sqlite3.Database('./chat.db');
+// /* BDD */
+// const db = new sqlite3.Database('./chat.db');
 
-db.run(`
-  CREATE TABLE IF NOT EXISTS messages (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT,
-    message TEXT,
-    timestamp TEXT
-  )
-`);
+// db.run(`
+//   CREATE TABLE IF NOT EXISTS messages (
+//     id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     username TEXT,
+//     message TEXT,
+//     timestamp TEXT
+//   )
+// `);
 
 
 /* VIEW ENGINE */
