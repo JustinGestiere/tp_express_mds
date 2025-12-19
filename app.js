@@ -1,15 +1,15 @@
-let express = require('express');
-let path = require('path');
-let logger = require('morgan');
-let session = require('express-session');
-let http = require('http');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const session = require('express-session');
+const http = require('http');
 const { Server } = require("socket.io");
 
-let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
-let api = require("./routes/api");
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const api = require("./routes/api");
 
-let app = express();
+const app = express();
 
 /* Variable pour stocker l'historique en mémoire */
 const messages = [];

@@ -1,5 +1,6 @@
-let express = require("express");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
+const { io, messages } = require("../app");
 
 // On va recevoir le tableau depuis app.js
 let messagesRef;
@@ -43,7 +44,6 @@ router.post("/", auth, (req, res) => {
 
   res.status(201).json(newMessage);
 });
-
 
 // GET /api/send/:name?/:text?  -> ? = optionnel
 router.get("/send/:name?/:text?", (req, res) => {
