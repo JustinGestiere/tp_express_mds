@@ -9,6 +9,8 @@ const auth = (req, res, next) => {
   res.redirect("/connexion");
 };
 
+
+
 /* ============================
    GET home page
 ============================ */
@@ -30,7 +32,7 @@ router.get('/dashboard', function(req, res) {
 });
 
 /* ============================
-   GET chat page (protégé)
+   GET chat page
 ============================ */
 router.get("/chat", (req, res) => {
   res.render("chat", { 
@@ -63,16 +65,6 @@ router.post("/connexion", (req, res) => {
 });
 
 /* ============================
-   GET users page (protégé)
-============================ */
-router.get("/users", auth, (req, res) => {
-  res.render("users", { 
-    title: "Users", 
-    Message: "Liste des utilisateurs" 
-  });
-});
-
-/* ============================
    GET logout
 ============================ */
 router.get("/logout", (req, res) => {
@@ -84,7 +76,5 @@ router.get("/logout", (req, res) => {
     res.redirect("/connexion");
   });
 });
-
-
 
 module.exports = router;

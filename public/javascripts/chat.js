@@ -11,13 +11,8 @@ const chatBox = document.getElementById("chat-box");
 let username = "";
 
 // Liste des mots interdits (en minuscules)
-const bannedWords = ["pute", "salope", "connard"];
+const bannedWords = ["pute", "salope", "connard", "con", "conne", "batard", "merde", "de pute", "de chien", "salopard"];
 
-/**
- * Remplace les mots interdits par des **** correspondant à leur longueur
- * @param {string} text
- * @returns {string}
- */
 function censorText(text) {
     return text.split(/\b/).map(word => {
         return bannedWords.includes(word.toLowerCase())
@@ -26,10 +21,6 @@ function censorText(text) {
     }).join("");
 }
 
-/**
- * Affiche un message dans le chat
- * @param {Object} data - { username, message, timestamp }
- */
 function displayMessage(data) {
     const div = document.createElement("div");
     div.classList.add("message");

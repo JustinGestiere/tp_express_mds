@@ -7,8 +7,12 @@ const { Server } = require("socket.io");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var api = require("./routes/api");
 
 var app = express();
+
+/* Variable pour stocker l'historique en mémoire */
+const messages = [];
 
 /* VIEW ENGINE */
 app.set('views', path.join(__dirname, 'views'));
@@ -35,6 +39,7 @@ app.use((req, res, next) => {
 /* ROUTES */
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use("/api", api.router);
 
 /* 404 */
 app.use((req, res) => {
@@ -45,8 +50,9 @@ app.use((req, res) => {
 const server = http.createServer(app);
 const io = new Server(server);
 
-/* Variable pour stocker l'historique en mémoire */
-const messages = [];
+/* API */
+api.setMessagesArray(messages);
+
 
 /* Socket.IO */
 io.on("connection", (socket) => {
