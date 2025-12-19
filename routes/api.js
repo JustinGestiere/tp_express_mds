@@ -48,7 +48,7 @@ router.post("/", auth, (req, res) => {
 // GET /api/send/:name?/:text?  -> ? = optionnel
 router.get("/send/:name?/:text?", (req, res) => {
   const username = req.params.name || "Invité"; // valeur par défaut si pas fourni
-  const message = req.params.text || "";
+  const message = req.params.text || "Justin";
   const timestamp = new Date().toLocaleString();
 
   if (!message) {
