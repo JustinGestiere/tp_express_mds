@@ -1,4 +1,3 @@
-// Assurez-vous que ce script est chargé après socket.io.js
 const socket = io();
 
 // DOM
@@ -25,13 +24,13 @@ function displayMessage(data) {
     const div = document.createElement("div");
     div.classList.add("message");
 
-    const strong = document.createElement("strong");
-    strong.textContent = `${data.username} :`;
+    const name = document.createElement("strong");
+    name.textContent = `${data.username} :`;
 
     const span = document.createElement("span");
     span.textContent = `${censorText(data.message)} [${data.timestamp}]`;
 
-    div.appendChild(strong);
+    div.appendChild(name);
     div.appendChild(document.createTextNode(" "));
     div.appendChild(span);
 

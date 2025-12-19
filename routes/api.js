@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 
 // On va recevoir le tableau depuis app.js
 let messagesRef;
@@ -23,24 +23,15 @@ function setMessagesArray(arr) {
  * Récupère tous les messages
  */
 
-router.get("/messages",auth, (req, res) => {
+router.get("/messages", auth, (req, res) => {
   res.json(messagesRef || []);
 });
-
-/**
- * GET /api
- * Vérifie que l'API fonctionne
- */
-// router.get("/", (req, res) => {
-//   res.json({ status: "ok", message: "L'API fonctionne !" });
-// });
-
 
 /**
  * POST /api/messages
  * Ajoute un message
  */
-router.post("/", (req, res) => {
+router.post("/", auth, (req, res) => {
   const { username, message, timestamp } = req.body;
 
   if (!username || !message || !timestamp) {
@@ -52,6 +43,28 @@ router.post("/", (req, res) => {
 
   res.status(201).json(newMessage);
 });
+
+
+// GET /api/send/:name?/:text?  -> ? = optionnel
+router.get("/send/:name?/:text?", (req, res) => {
+  const username = req.params.name || "Invité"; // valeur par défaut si pas fourni
+  const message = req.params.text || "";
+  const timestamp = new Date().toLocaleString();
+
+  if (!message) {
+    return res.json({ status: "error", message: "Texte vide" });
+  }
+
+  // Stocker le message dans le tableau messages
+  messages.push({ username, message, timestamp });
+
+  // Envoyer en temps réel aux clients connectés
+  io.emit("chatMessage", { username, message, timestamp });
+
+  // Réponse API
+  res.json({ status: "ok", username, message, timestamp });
+});
+
 
 module.exports = {
   router,
